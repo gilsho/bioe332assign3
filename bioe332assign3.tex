@@ -1,0 +1,175 @@
+\documentclass[10pt]{article}
+
+%AMS-TeX packages
+\usepackage{comment}
+\usepackage{amssymb,amsmath,amsthm} 
+\usepackage{enumerate}
+\usepackage{algpseudocode}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+%geometry (sets margin) and other useful packages
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,ctable,booktabs}
+\usepackage{longtable}
+\usepackage{bbm}
+%Graph Packages
+\usepackage{tikz}
+\usepackage{tikz,fullpage}
+\usepackage{multicol}
+\usetikzlibrary{arrows,%
+                petri,%
+                topaths}%
+%\usepackage{tkz-berge}
+\usepackage[position=top]{subfig}
+
+
+
+%
+%Redefining sections as problems
+%
+\makeatletter
+\newenvironment{problem}{\@startsection
+       {section}
+       {1}
+       {-.2em}
+       {-3.5ex plus -1ex minus -.2ex}
+       {2.3ex plus .2ex}
+       {\pagebreak[3]%forces pagebreak when space is small; use \eject for better results
+       \large\bf\noindent{Problem }
+       }
+}
+{%\vspace{1ex}\begin{center} \rule{0.3\linewidth}{.3pt}\end{center}}
+\begin{center}\large\bf \ldots\ldots\ldots\end{center}}
+\makeatother
+
+%Redefine the first level of lists
+\renewcommand{\theenumi}{\arabic{enumi}}
+ 
+%Redefine the second level of lists
+\renewcommand{\theenumii}{\arabic{enumii}}
+\renewcommand{\labelenumii}{\theenumi.\theenumii .}
+
+%
+%Fancy-header package to modify header/page numbering 
+%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+%\addtolength{\headwidth}{\marginparsep} %these change header-rule width
+%\addtolength{\headwidth}{\marginparwidth}
+\lhead{Gil Shotan}
+\chead{} 
+\rhead{gilsho@cs.stanford.edu} 
+\lfoot{\small\scshape BioE 332} 
+\cfoot{\thepage} 
+\rfoot{\footnotesize Assignment 3} 
+\renewcommand{\headrulewidth}{.3pt} 
+\renewcommand{\footrulewidth}{.3pt}
+\setlength\voffset{-0.25in}
+\setlength\textheight{648pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Title Page
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\title{BioE 332 Assignment 3: Balanced Networks}
+\author{Gil Shotan \\ gilsho@cs.stanford.edu}
+%\date{}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%Contents of problem set
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.6]{uniform_raster.png}
+     \includegraphics[scale=0.6]{uniform_network.png}
+    \caption{Spontaneous activity in a uniform balanced network. Left: Spike rasters for a subpopulation of 1600 excitatory neurons. Right: Time course of the population  ing rate sampled at 0.1 ms time windows (black) and smoothed with 5 ms time window (cyan). Time course of the synaptic currents:
+excitation (blue), inhibition (red) and their sum (black), and membrane voltage for an
+example neuron.}
+\end{figure}
+\begin{figure}[h!]
+%Explain the irregularity of spiking based on the values of currents and voltage you measured; explain how these quantities are balanced.
+The rapid firing rate can be explained by the very subtle increase in the excitation current. From the plots we can estimate that the change necessary to transition a neuron into a rapid firing rate is between 5\% and 10\%. A stronger excitation will elicit more inhibition from the inhibitory population forming a negative feedback loop that resists the synaptic current from deviating very much from the balanced point.
+  \centering
+    \includegraphics[scale=0.6]{cluster_raster.png}
+     \includegraphics[scale=0.6]{cluster_network.png}
+      \caption{Spontaneous activity in a clustered balanced network. Left: Spike rasters for a subpopulation of 1600 excitatory neurons. Right: Time course of the population  ing rate sampled at 0.1 ms time windows (black) and smoothed with 5 ms time window (cyan). Time course of the synaptic currents: excitation (blue), inhibition (red) and their sum (black), and membrane voltage for an
+example neuron.}
+\end{figure}
+
+\subsection*{Sparseness calculation of clustered network}
+\[
+\frac{p^{EE}_{in}}{p^{EE}_{out}} = 2.5,
+\quad
+\frac{N_cp^{EE}_{in} + (N_E - N_c)p^{EE}_{out}}{N_E} = 0.2
+\]
+
+\begin{align*}
+\frac{N_cp^{EE}_{in} + (N_E - N_c)p^{EE}_{out}}{N_E} =& 0.2
+\\
+\frac{80p^{EE}_{in} + 3920p^{EE}_{out}}{4000} = &0.2
+\\
+80p^{EE}_{in} + 3920p^{EE}_{out} = &800
+\\
+80p^{EE}_{in} + \frac{3920}{2.5}p^{EE}_{in} = &800
+\\
+80p^{EE}_{in} + 1568p^{EE}_{in} = &800
+\\
+1648p^{EE}_{in} = &800
+\\
+p^{EE}_{in} = &\frac{800}{1648}
+\\
+p^{EE}_{in} = &0.4854
+\\
+p^{EE}_{out} = &0.1942
+\end{align*}
+
+
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.4]{uniform_stats_frate.png}
+     \includegraphics[scale=0.4]{uniform_stats_isi.png}
+    \includegraphics[scale=0.4]{uniform_stats_cv.png}
+     \includegraphics[scale=0.4]{uniform_stats_fano.png}
+      \caption{Statistics of spiking in uniform balanced network.}
+\end{figure}
+
+\begin{figure}[h!]
+        %Discuss the diferences in spiking statistics between two network types and explain their origin
+   There are noticeable differences between the spiking statistics of the the uniform vs. the balanced networks. First we note that the average firing rate is skewed more towards the right in the balanced networks. While the network resides in one of the attractor states, higher firing rates will be observed in the neurons composing the attractor group due to strong recurrent excitation and thus cause this skewed tail. We also observe a sharp peak around 0 in the interspike interval chart for the same reason, as high firing rates are a result of two spikes occurring in rapid succession. And since most \emph{spikes} must occur during the high firing rate regime we observe the sharp peak at 0. The existence of two stable states for an excitatory group, the low activity state and the high activity state means the variability in the firing rates and inter spiking intervals is increased, which results in a more rightly-skewed grape of coefficient of variance and fano factors. 
+    \includegraphics[scale=0.4]{cluster_stats_frate.png}
+     \includegraphics[scale=0.4]{cluster_stats_isi.png}
+    \includegraphics[scale=0.4]{cluster_stats_cv.png}
+     \includegraphics[scale=0.4]{cluster_stats_fano.png}
+      \caption{Statistics of spiking in clustered balanced network. Note different scale from figure 3}
+\end{figure}
+
+
+\begin{figure}[h!]
+The noticeable differences in the mean activity of the stimulated clusters are a result of the dense connectivity within each cluster. The dense connectivity form a collective recurrent excitatory connection pattern. This structure serves as a positive feedback mechanism to spread the input current throughout the  cluster and keep the cluster in a high activity state. In the uniform network connections are both sparser and weaker within in each cluster as compared to neurons in different groups, which serves to spread the input across all clusters.
+ \centering
+    \includegraphics[scale=0.6]{stim_uniform_raster.png}
+     \includegraphics[scale=0.6]{stim_cluster_raster.png}
+      \caption{Spike rasters for example trials of stimulated uniform (left) and clustered (right) balanced networks}
+\end{figure}
+
+\begin{figure}[h!]
+   \centering
+    \includegraphics[scale=0.6]{stim_fano.png}
+      \caption{}
+\end{figure}
+
+
+
+
+
+\end{document}
